@@ -1,0 +1,8 @@
+homeserver:
+    base: https://example.com:8448
+    api_base: /_matrix/client/r0
+user:
+    name: "@user:example.com"
+    pass: myS3cr7p4$$w0rd
+room:
+    id: "<ROOMID>"
