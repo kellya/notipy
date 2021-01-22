@@ -7,7 +7,9 @@ This is not an interactive chat bot.  The use case is to have scripts send alert
 I may eventually get this up in pypi, but for now:
 1.  clone the repo
 2.  install the requirements `pip install -r requirements.txt`
-3.  Then just use `./noti.py --help` to figure out what options you can specify
+3.  `cp example-config.yaml config.yaml`
+4.  Edit the config.yaml to your local needs
+5.  Then just use `./noti.py --help` to figure out what options you can specify
 
 # Inspiration
 I tried to use [mnotify](https://matrix.org/docs/projects/client/mnotify) which is written in go.  When I ran `make`, it gave a segfault.  Rather than try to learn go, I decided to just try to do the same thing in python.
