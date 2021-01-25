@@ -9,7 +9,7 @@ import select
 import click
 from config import Config
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 cf = Config()  # Config object we will use globally for options
 
@@ -57,9 +57,18 @@ def token(user, password):
 
 
 @main.command()
-@click.option("--roomid", prompt=True)
-def join(roomid):
-    print(f"join {roomid}")
+def join():
+    """Join a room as the user configured with token in config.yaml"""
+    base = cf.config["homeserver"]["base"] + cf.config["homeserver"]["api_base"]
+    joinurl = f'{base}/join/{cf.config["room"]["id"]}'
+    room_join = requests.post(
+        joinurl,
+        json={},
+        headers={
+            "Authorization": "Bearer " + cf.config["user"]["token"],
+        },
+    )
+    print(room_join.content)
 
 
 @main.command()
