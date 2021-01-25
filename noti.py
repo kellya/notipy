@@ -9,7 +9,7 @@ import select
 import click
 from config import Config
 
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 
 cf = Config()  # Config object we will use globally for options
 
@@ -72,10 +72,27 @@ def join():
 
 
 @main.command()
+@click.option('-n', '--name', prompt=True)
+def create(name):
+    """Create a room with an alias named <name>"""
+    base = cf.config["homeserver"]["base"] + cf.config["homeserver"]["api_base"]
+    roomurl = f'{base}/createRoom'
+    create_room = requests.post(
+        roomurl,
+        json={
+            "room_alias_name": name,
+        },
+        headers={
+            "Authorization": "Bearer " + cf.config["user"]["token"],
+        },
+    )
+    print(create_room.content)
+
+
+@main.command()
 @click.argument("messagetext", required=False)
 def send(messagetext):
     "Send a message to your alert room defined in config.yaml"
-
     base = cf.config["homeserver"]["base"] + cf.config["homeserver"]["api_base"]
     roomid = urllib.parse.quote(cf.config["room"]["id"])
     roomurl = f"{base}/rooms/{roomid}/send/m.room.message"
@@ -99,6 +116,20 @@ def send(messagetext):
             "Authorization": "Bearer " + cf.config["user"]["token"],
         },
     )
+
+
+@main.command()
+def rooms():
+    """Get a list of rooms of which configured user is joined"""
+    base = cf.config["homeserver"]["base"] + cf.config["homeserver"]["api_base"]
+    roomurl = f'{base}/joined_rooms'
+    room_list = requests.get(
+        roomurl,
+        headers={
+            "Authorization": "Bearer " + cf.config["user"]["token"],
+        },
+    )
+    print(room_list.content)
 
 
 if __name__ == "__main__":
