@@ -3,6 +3,7 @@
 import requests
 import urllib.parse
 import sys
+import json
 
 import select
 import click
@@ -29,16 +30,6 @@ def main(config, version):
         print(__version__)
         sys.exit()
     cf.load_config(config)
-
-    # if select.select(
-    #    [
-    #        sys.stdin,
-    #    ],
-    #    [],
-    #    [],
-    #    0.0,
-    #)[0]:
-    #    send(sys.stdin.readline())
 
 
 @main.command()
@@ -72,12 +63,23 @@ def join(roomid):
 
 
 @main.command()
-@click.argument("messagetext")
+@click.argument("messagetext", required=False)
 def send(messagetext):
     "Send a message to your alert room defined in config.yaml"
+
     base = cf.config["homeserver"]["base"] + cf.config["homeserver"]["api_base"]
     roomid = urllib.parse.quote(cf.config["room"]["id"])
     roomurl = f"{base}/rooms/{roomid}/send/m.room.message"
+    if select.select(
+        [
+            sys.stdin,
+        ],
+        [],
+        [],
+        0.0,
+    )[0]:
+        messagetext_stream = click.get_text_stream("stdin")
+        messagetext = messagetext_stream.read().strip()
     message = requests.post(
         roomurl,
         json={
