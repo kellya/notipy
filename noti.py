@@ -9,7 +9,7 @@ import select
 import click
 from config import Config
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 cf = Config()  # Config object we will use globally for options
 
