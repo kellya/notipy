@@ -2,7 +2,6 @@ homeserver:
     base: https://example.com:8448
     api_base: /_matrix/client/r0
 user:
-    name: "@user:example.com"
-    pass: myS3cr7p4$$w0rd
+    token: <output of `noti.py token`>
 room:
     id: "<ROOMID>"
