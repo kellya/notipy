@@ -1,0 +1,3 @@
+I took the python logo, and the bell logo from fontawesome, stuck them together, and added a border so that it looked slightly less bad on dark displays.
+
+The full fontawesome license is available at https://fontawesome.com/licensehttps://fontawesome.com/license
