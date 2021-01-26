@@ -1,4 +1,5 @@
 <img src="https://raw.githubusercontent.com/kellya/notipy/master/images/notipy.svg" width="200">
+
 # noti.py
 Simple Python-based notification script to post to a matrix server via the Matrix client/server API
 
@@ -25,6 +26,12 @@ start with `noti.py --help` to see a list of the commands you can use.  Generall
 At this point you should be able to send a message with: `./noti.py send "message to send"` or if you are so inclined, you can pipe stdin to the script with `echo "message to send"|./noti.py send`
 # Inspiration
 I tried to use [mnotify](https://matrix.org/docs/projects/client/mnotify) which is written in go.  When I ran `make`, it gave a segfault upon running `mnotify`.  Rather than try to learn go, I decided to just try to do the same thing in python.
+
+# Contribute
+Feel free to fork, make updates and submit a pull request for new things or to fix some horrible python atrocity I have commited ;)
+
+# Chat
+You can join me on matrix at https://matrix.to/#/#noti.py:arachnitech.com
 
 # Notes
 I started using matrix 3 days ago.  There are a lot of things about its operation that I haven't figure out yet.  This will hopefully progress as I figure things out, but beware that this approach may not be the best one.
