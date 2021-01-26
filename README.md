@@ -1,3 +1,4 @@
+![notipy](https://raw.githubusercontent.com/kellya/notipy/master/images/notipy.svg)
 # noti.py
 Simple Python-based notification script to post to a matrix server via the Matrix client/server API
 
