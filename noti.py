@@ -72,11 +72,11 @@ def join():
 
 
 @main.command()
-@click.option('-n', '--name', prompt=True)
+@click.option("-n", "--name", prompt=True)
 def create(name):
     """Create a room with an alias named <name>"""
     base = cf.config["homeserver"]["base"] + cf.config["homeserver"]["api_base"]
-    roomurl = f'{base}/createRoom'
+    roomurl = f"{base}/createRoom"
     create_room = requests.post(
         roomurl,
         json={
@@ -91,11 +91,15 @@ def create(name):
 
 @main.command()
 @click.argument("messagetext", required=False)
-def send(messagetext):
+@click.option(
+    "-i",
+    "--roomid",
+    multiple=True,
+    default=lambda: cf.config["room"]["id"],
+)
+def send(messagetext, roomid):
     "Send a message to your alert room defined in config.yaml"
     base = cf.config["homeserver"]["base"] + cf.config["homeserver"]["api_base"]
-    roomid = urllib.parse.quote(cf.config["room"]["id"])
-    roomurl = f"{base}/rooms/{roomid}/send/m.room.message"
     if select.select(
         [
             sys.stdin,
@@ -106,23 +110,27 @@ def send(messagetext):
     )[0]:
         messagetext_stream = click.get_text_stream("stdin")
         messagetext = messagetext_stream.read().strip()
-    message = requests.post(
-        roomurl,
-        json={
-            "msgtype": "m.text",
-            "body": messagetext,
-        },
-        headers={
-            "Authorization": "Bearer " + cf.config["user"]["token"],
-        },
-    )
+    for room in roomid:
+        roomurl = f"{base}/rooms/{urllib.parse.quote(room)}/send/m.room.message"
+        message = requests.post(
+            roomurl,
+            json={
+                "msgtype": "m.text",
+                "body": messagetext,
+            },
+            headers={
+                "Authorization": "Bearer " + cf.config["user"]["token"],
+            },
+        )
+    if message.status_code > 200:
+        print("There was an issue posting the message")
 
 
 @main.command()
 def rooms():
     """Get a list of rooms of which configured user is joined"""
     base = cf.config["homeserver"]["base"] + cf.config["homeserver"]["api_base"]
-    roomurl = f'{base}/joined_rooms'
+    roomurl = f"{base}/joined_rooms"
     room_list = requests.get(
         roomurl,
         headers={
