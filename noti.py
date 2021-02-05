@@ -97,7 +97,8 @@ def create(name):
     multiple=True,
     default=lambda: cf.config["room"]["id"],
 )
-def send(messagetext, roomid):
+@click.option("-l", "--level", default=0, help="Severity level 1-3")
+def send(messagetext, roomid, level):
     "Send a message to your alert room defined in config.yaml"
     base = cf.config["homeserver"]["base"] + cf.config["homeserver"]["api_base"]
     if select.select(
@@ -112,11 +113,20 @@ def send(messagetext, roomid):
         messagetext = messagetext_stream.read().strip()
     for room in roomid:
         roomurl = f"{base}/rooms/{urllib.parse.quote(room)}/send/m.room.message"
+        colors = [
+            "#FFFFFF",
+            "#00FF00",
+            "#FFFF00",
+            "#FF9933",
+            "#FF0000",
+        ]
         message = requests.post(
             roomurl,
             json={
                 "msgtype": "m.text",
                 "body": messagetext,
+                "format": "org.matrix.custom.html",
+                "formatted_body": f"<table><tr><td><span data-mx-bg-color='{colors[level]}'>&nbsp;&nbsp;</td></span><td>{messagetext}</td></tr></table>",
             },
             headers={
                 "Authorization": "Bearer " + cf.config["user"]["token"],
