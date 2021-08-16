@@ -6,7 +6,14 @@ Simple Python-based notification script to post to a matrix server via the Matri
 This is not an interactive chat bot.  The use case is to have scripts send alerts to a single alert channel.
 
 # How to install
-I may eventually get this up in pypi, but for now:
+## Via PyPi
+As of version 0.0.6, noti.py has been published to PyPi, so installing (should
+be) as easy as
+`pip install noti_py`
+
+This will also create a `notipy` "entrypoint" to use as the binary to run.
+
+## Via git
 1.  clone the repo
 2.  install the requirements `pip install -r requirements.txt`
 3.  `cp example-config.yaml config.yaml`
