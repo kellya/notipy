@@ -16,9 +16,18 @@ This will also create a `notipy` "entrypoint" to use as the binary to run.
 ## Via git
 1.  clone the repo
 2.  install the requirements `pip install -r requirements.txt`
-3.  `cp example-config.yaml config.yaml`
+3.  `cp example-config.yaml <config_dir>config.yaml`
 4.  Edit the config.yaml to your local needs
 5.  Then just use `./noti.py --help` to figure out what options you can specify
+
+<config_dir> referenced in step 3 above will be checked in the following order
+or preference
+1. . (current directory)
+2. ~/.config/noti_py
+3. /etc/noti_py
+
+If you want it in another location completely, specify the `--config` option to
+override.
 
 # How do I use this thing?
 start with `noti.py --help` to see a list of the commands you can use.  Generally you are going to need to do the following things:

@@ -8,10 +8,24 @@ import json
 import select
 import click
 from noti_py.config.config import Config
+from pathlib import Path
 
 __version__ = "0.0.6"
 
 cf = Config()  # Config object we will use globally for options
+
+
+def get_default_config_path():
+    """
+    Try known paths for config.yaml and return None if file is not found in
+    default locations.
+    """
+    base_dirs = [".", f"{str(Path.home())}/.config/noti_py", "/etc/noti_py/"]
+    for config_dir in base_dirs:
+        path = Path(f"{config_dir}/config.yaml")
+        if path.is_file():
+            return path
+    return None
 
 
 @click.group(name="main", invoke_without_command=True)
@@ -20,7 +34,7 @@ cf = Config()  # Config object we will use globally for options
     "--config",
     type=click.Path(),
     help="Alternate path to config file",
-    default="./config.yaml",
+    default=get_default_config_path(),
 )
 @click.option(
     "--version", type=click.BOOL, is_flag=True, help="Display version information"
@@ -29,7 +43,10 @@ def main(config, version):
     if version:
         print(__version__)
         sys.exit()
-    cf.load_config(config)
+    if config:
+        cf.load_config(config)
+    else:
+        sys.exit("No configuration file found")
 
 
 @main.command()
