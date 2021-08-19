@@ -4,7 +4,7 @@ BUILDDIR=dist
 #GH/github command used to initiate a release
 GH=/usr/bin/gh
 
-build: dir
+build: dir test
 	poetry build
 
 dir: 
@@ -12,6 +12,9 @@ dir:
 
 clean:
 	rm -rf $(BUILDDIR)
+
+test:
+	pytest -v
 
 poetry-release: build
 	poetry publish
