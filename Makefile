@@ -10,7 +10,6 @@ build: dir
 dir: 
 	[ -d $(BUILDDIR) ] || mkdir -p $(BUILDDIR)
 
-
 clean:
 	rm -rf $(BUILDDIR)
 
