@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "noti.py"
-version = "0.0.7"
+version = "0.3.0"
 description = "Python-based notification script to post a message to a materix server via the Matrix client/server API"
 authors = ["Alex Kelly <kellya@arachnitech.com>"]
 readme = "README.md"
@@ -17,6 +17,8 @@ click = "^8.0.1"
 requests = "^2.26.0"
 
 [tool.poetry.dev-dependencies]
+python-semantic-release = "^7.19.1"
+pytest = "^6.2.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -24,3 +26,9 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 notipy = 'noti_py.noti:main'
+
+[tool.semantic_release]
+version_variable = [
+    "noti_py/noti.py:__version__",
+    "pyproject.toml:version"
+]

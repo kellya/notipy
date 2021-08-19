@@ -10,7 +10,7 @@ import click
 from noti_py.config.config import Config
 from pathlib import Path
 
-__version__ = "0.0.7"
+__version__ = "0.3.0"
 
 cf = Config()  # Config object we will use globally for options
 
