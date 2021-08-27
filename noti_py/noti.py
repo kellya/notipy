@@ -143,7 +143,19 @@ def send(messagetext, roomid, level):
                 "msgtype": "m.text",
                 "body": messagetext,
                 "format": "org.matrix.custom.html",
-                "formatted_body": f"<table><tr><td><span data-mx-bg-color='{colors[level]}'>&nbsp;&nbsp;</td></span><td>{messagetext}</td></tr></table><span data-mx-bg-color='{colors[level]}'>&nbsp;&nbsp;</td></span><td>{messagetext}</td></tr></table></span><td>{messagetext}</td></tr></table>",
+                "formatted_body": f"""
+                <table>
+                <tr>
+                  <td>
+                    <span data-mx-bg-color='{colors[level]}'>&nbsp;&nbsp;
+                </span>
+                  </td>
+                <td>{messagetext}</td></tr>
+                </table>
+                """,
+                #                <span data-mx-bg-color='{colors[level]}'>&nbsp;&nbsp;</td>
+                #                </span><td>{messagetext}</td></tr></table></span>
+                #                <td>{messagetext}</td></tr></table>""",
             },
             headers={
                 "Authorization": "Bearer " + cf.config["user"]["token"],
