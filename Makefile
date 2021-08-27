@@ -29,7 +29,7 @@ pyflakes:
 	pyflakes ${PROJECT_BASE}
 
 pylint:
-	pylint --load-plugins=pylint_django --django-settings-module=fam_mac.settings ${PROJECT_BASE}
+	pylint ${PROJECT_BASE}
 
 gh-release: build
 	#Figure out what the last/most recent build is
