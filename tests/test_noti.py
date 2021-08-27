@@ -23,4 +23,3 @@ def test_config():
     """Verify that we get a config returned, should be local for testing"""
     config_path = get_default_config_path()
     assert config_path is not None
-    assert str(config_path) in ["config.yaml"]
