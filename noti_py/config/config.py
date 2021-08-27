@@ -8,7 +8,7 @@ class Config:  # pylint: disable=too-few-public-methods
     def __init__(self):
         self.config = None
 
-    def load_config(self, configfile="conf.yaml"):
+    def load_config(self, configfile="config.yaml"):
         """Load the configuration from specified file"""
         try:
             with open(configfile, "r", encoding="UTF-8") as config_file:
