@@ -1,8 +1,7 @@
-from noti_py.noti import main as notipy_main
-from noti_py.noti import __version__ as notipy_version
-from noti_py.noti import get_default_config_path
+""" Test cases for noti.py """
 from click.testing import CliRunner
-from pathlib import Path
+from noti_py.noti import main as notipy_main
+from noti_py.noti import get_default_config_path
 
 runner = CliRunner()
 

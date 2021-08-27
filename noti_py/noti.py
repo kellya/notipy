@@ -3,7 +3,6 @@
 import requests
 import urllib.parse
 import sys
-import json
 
 import select
 import click
