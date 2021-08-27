@@ -1,0 +1,9 @@
+[run]
+source =
+    noti_py
+omit =
+    */__init__.py
+
+[report]
+fail_under =
+    80
