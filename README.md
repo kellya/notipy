@@ -1,4 +1,5 @@
 <img src="https://raw.githubusercontent.com/kellya/notipy/master/images/notipy.svg" width="200">
+[Build Status](https://build.arachnitech.com/badges/noti.py.png)
 
 # noti.py
 Simple Python-based notification script to post to a matrix server via the Matrix client/server API
