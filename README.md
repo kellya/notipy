@@ -1,5 +1,6 @@
 <img src="https://build.arachnitech.com/badges/noti.py.png">
 <img src="https://raw.githubusercontent.com/kellya/notipy/master/images/notipy.svg" width="200">
+
 # noti.py
 Simple Python-based notification script to post to a matrix server via the Matrix client/server API
 
@@ -48,6 +49,3 @@ Feel free to fork, make updates and submit a pull request for new things or to f
 
 # Chat
 You can join me on matrix at https://matrix.to/#/#noti.py:arachnitech.com
-
-# Notes
-I started using matrix 3 days ago.  There are a lot of things about its operation that I haven't figure out yet.  This will hopefully progress as I figure things out, but beware that this approach may not be the best one.
