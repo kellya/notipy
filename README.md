@@ -1,4 +1,5 @@
-![build status](https://build.arachnitech.com/badges/noti.py.png) ![latest Release](https://img.shields.io/github/v/release/kellya/noti.py) ![Latest in dev](https://img.shields.io/github/v/tag/kellya/noti.py?label=latest%20%28dev%29)
+![build status](https://build.arachnitech.com/badges/noti.py.png) ![latest Release](https://img.shields.io/github/v/release/kellya/notipy) ![Latest in dev](https://img.shields.io/github/v/tag/kellya/notipy?label=latest%20%28dev%29)
+
 <img src="https://raw.githubusercontent.com/kellya/notipy/master/images/notipy.svg" width="200">
 
 # noti.py
