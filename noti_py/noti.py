@@ -1,26 +1,27 @@
 #!/usr/bin/env python
 
-import requests
-import urllib.parse
-import sys
-import json
-
+from pathlib import Path
 import select
+import sys
+import urllib.parse
+import requests
 import click
 from noti_py.config.config import Config
-from pathlib import Path
 
 __version__ = "0.3.1"
 
 cf = Config()  # Config object we will use globally for options
 
 
-def get_default_config_path():
+def get_default_config_path(test=False):
     """
     Try known paths for config.yaml and return None if file is not found in
     default locations.
     """
-    base_dirs = [".", f"{str(Path.home())}/.config/noti_py", "/etc/noti_py/"]
+    if not test:
+        base_dirs = [".", f"{str(Path.home())}/.config/noti_py", "/etc/noti_py/"]
+    else:
+        base_dirs = ["fake"]
     for config_dir in base_dirs:
         path = Path(f"{config_dir}/config.yaml")
         if path.is_file():
@@ -40,13 +41,12 @@ def get_default_config_path():
     "--version", type=click.BOOL, is_flag=True, help="Display version information"
 )
 def main(config, version):
+    """main function"""
     if version:
         print(__version__)
         sys.exit()
     if config:
         cf.load_config(config)
-    else:
-        sys.exit("No configuration file found")
 
 
 @main.command()

@@ -2,15 +2,19 @@ import yaml
 
 
 class Config:
+    """Create an object to track config options "too few public methods" be damned :)"""
+
     def __init__(self):
         self.config = None
 
     def load_config(self, configfile):
+        """Method to read the configfile and return a"""
         try:
-            with open(configfile, "r") as config_file:
+            with open(configfile, "r", encoding="UTF-8") as config_file:
                 config_entries = yaml.safe_load(config_file)
         except FileNotFoundError as error:
             print(error)
             return False
         else:
             self.config = config_entries
+        return True
