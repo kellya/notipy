@@ -132,6 +132,15 @@ def get_dm_room_id(dm_user=None):
             },
         )
         dm_room_id = cr.json()["room_id"]
+        # for some reason, that invite in the json didn't work for me so force
+        # an invite
+        invite = requests.post(
+            f"{base}/rooms/{cr.json()['room_id']}/invite",
+            json={"user_id": dm_user},
+            headers={
+                "Authorization": "Bearer " + cf.config["user"]["token"],
+            },
+        )
     return dm_room_id
 
 
@@ -144,9 +153,7 @@ def get_dm_room_id(dm_user=None):
     default=lambda: cf.config["room"]["id"],
 )
 @click.option("-l", "--level", default=0, help="Severity level 1-3")
-@click.option(
-    "--dm", is_flag=True, default=False, help="Send message as direct message"
-)
+@click.option("--dm", help="Send message as direct message")
 def send(messagetext, roomid, level, dm):
     "Send a message to your alert room defined in config.yaml"
     base = cf.config["homeserver"]["base"] + cf.config["homeserver"]["api_base"]
@@ -161,8 +168,8 @@ def send(messagetext, roomid, level, dm):
         messagetext_stream = click.get_text_stream("stdin")
         messagetext = messagetext_stream.read().strip()
     if dm:
-        roomid = [get_dm_room_id()]
-        print(roomid)
+        print(dm)
+        roomid = [get_dm_room_id(dm)]
     for room in roomid:
         roomurl = f"{base}/rooms/{urllib.parse.quote(room)}/send/m.room.message"
         colors = [
