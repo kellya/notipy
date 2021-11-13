@@ -5,3 +5,6 @@ user:
     token: <output of `noti.py token`>
 room:
     id: ["<ROOMID>"]
+dm:
+    room: "<ROOMID>"
+    user: "@user:domain.tld"

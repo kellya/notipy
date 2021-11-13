@@ -106,6 +106,35 @@ def create(name):
     print(create_room.content)
 
 
+def get_dm_room_id(dm_user=None):
+    """Get or create a direct message room for the user"""
+    try:
+        # If we have a room configured, use it
+        dm_room_id = cf.config["dm"]["room"]
+    except KeyError:
+        if not dm_user:
+            print("Need to specify a user to DM")
+            sys.exit()
+        # Otherwise, create a new room
+        base = cf.config["homeserver"]["base"] + cf.config["homeserver"]["api_base"]
+        # Create a new room
+        cr = requests.post(
+            f"{base}/createRoom",
+            json={
+                "body": {
+                    "preset": "trusted_private_chat",
+                    "invite": [dm_user],
+                    "is_direct": "true",
+                }
+            },
+            headers={
+                "Authorization": "Bearer " + cf.config["user"]["token"],
+            },
+        )
+        dm_room_id = cr.json()["room_id"]
+    return dm_room_id
+
+
 @main.command()
 @click.argument("messagetext", required=False)
 @click.option(
@@ -115,7 +144,10 @@ def create(name):
     default=lambda: cf.config["room"]["id"],
 )
 @click.option("-l", "--level", default=0, help="Severity level 1-3")
-def send(messagetext, roomid, level):
+@click.option(
+    "--dm", is_flag=True, default=False, help="Send message as direct message"
+)
+def send(messagetext, roomid, level, dm):
     "Send a message to your alert room defined in config.yaml"
     base = cf.config["homeserver"]["base"] + cf.config["homeserver"]["api_base"]
     if select.select(
@@ -128,6 +160,9 @@ def send(messagetext, roomid, level):
     )[0]:
         messagetext_stream = click.get_text_stream("stdin")
         messagetext = messagetext_stream.read().strip()
+    if dm:
+        roomid = [get_dm_room_id()]
+        print(roomid)
     for room in roomid:
         roomurl = f"{base}/rooms/{urllib.parse.quote(room)}/send/m.room.message"
         colors = [
