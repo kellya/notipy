@@ -6,6 +6,7 @@ import sys
 import urllib.parse
 import requests
 import click
+import yaml
 from noti_py.config.config import Config
 
 __version__ = "0.3.1"
@@ -167,9 +168,6 @@ def send(messagetext, roomid, level, dm):
     )[0]:
         messagetext_stream = click.get_text_stream("stdin")
         messagetext = messagetext_stream.read().strip()
-    if dm:
-        print(dm)
-        roomid = [get_dm_room_id(dm)]
     for room in roomid:
         roomurl = f"{base}/rooms/{urllib.parse.quote(room)}/send/m.room.message"
         colors = [
@@ -193,6 +191,29 @@ def send(messagetext, roomid, level, dm):
         )
     if message.status_code > 200:
         print("There was an issue posting the message")
+
+
+def save_config_file(data, config_path):
+    """Save the config file"""
+    try:
+        with open(config_path, "w") as config_file:
+            yaml.dump(data, config_file)
+    except IOError:
+        print(f"There was an issue saving the config data to {config_path}")
+
+
+@main.command()
+@click.argument("user_id", required=True)
+def dm(user_id):
+    """Setup a direct message room and invite the user"""
+    room_id = get_dm_room_id(user_id)
+    print(
+        f"You should have recieved an invite to {room_id} "
+        "in your chat client. You need to accept the invitation to receive "
+        "messages"
+    )
+    cf.config["room"]["id"].append(f"{room_id} #configured for DM")
+    save_config_file(cf.config)
 
 
 @main.command()
