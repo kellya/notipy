@@ -10,7 +10,7 @@ import click
 import yaml
 from noti_py.config.config import Config
 
-__version__ = "0.3.1"
+__version__ = "0.4.0"
 
 cf = Config()  # Config object we will use globally for options
 
