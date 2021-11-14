@@ -4,4 +4,6 @@ homeserver:
 user:
     token: <output of `noti.py token`>
 room:
-    id: ["<ROOMID>"]
+    id:
+    - !roomid1:domain.tld
+    - !roomid2:domain.tld

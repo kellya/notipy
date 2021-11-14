@@ -6,6 +6,7 @@ import sys
 import urllib.parse
 import requests
 import click
+import yaml
 from noti_py.config.config import Config
 
 __version__ = "0.3.1"
@@ -106,6 +107,44 @@ def create(name):
     print(create_room.content)
 
 
+def get_dm_room_id(dm_user=None):
+    """Get or create a direct message room for the user"""
+    try:
+        # If we have a room configured, use it
+        dm_room_id = cf.config["dm"]["room"]
+    except KeyError:
+        if not dm_user:
+            print("Need to specify a user to DM")
+            sys.exit()
+        # Otherwise, create a new room
+        base = cf.config["homeserver"]["base"] + cf.config["homeserver"]["api_base"]
+        # Create a new room
+        cr = requests.post(
+            f"{base}/createRoom",
+            json={
+                "body": {
+                    "preset": "trusted_private_chat",
+                    "invite": [dm_user],
+                    "is_direct": "true",
+                }
+            },
+            headers={
+                "Authorization": "Bearer " + cf.config["user"]["token"],
+            },
+        )
+        dm_room_id = cr.json()["room_id"]
+        # for some reason, that invite in the json didn't work for me so force
+        # an invite
+        invite = requests.post(
+            f"{base}/rooms/{cr.json()['room_id']}/invite",
+            json={"user_id": dm_user},
+            headers={
+                "Authorization": "Bearer " + cf.config["user"]["token"],
+            },
+        )
+    return dm_room_id
+
+
 @main.command()
 @click.argument("messagetext", required=False)
 @click.option(
@@ -115,7 +154,8 @@ def create(name):
     default=lambda: cf.config["room"]["id"],
 )
 @click.option("-l", "--level", default=0, help="Severity level 1-3")
-def send(messagetext, roomid, level):
+@click.option("--dm", help="Send message as direct message")
+def send(messagetext, roomid, level, dm):
     "Send a message to your alert room defined in config.yaml"
     base = cf.config["homeserver"]["base"] + cf.config["homeserver"]["api_base"]
     if select.select(
@@ -151,6 +191,29 @@ def send(messagetext, roomid, level):
         )
     if message.status_code > 200:
         print("There was an issue posting the message")
+
+
+def save_config_file(data, config_path):
+    """Save the config file"""
+    try:
+        with open(config_path, "w") as config_file:
+            yaml.dump(data, config_file)
+    except IOError:
+        print(f"There was an issue saving the config data to {config_path}")
+
+
+@main.command()
+@click.argument("user_id", required=True)
+def dm(user_id):
+    """Setup a direct message room and invite the user"""
+    room_id = get_dm_room_id(user_id)
+    print(
+        f"You should have recieved an invite to {room_id} "
+        "in your chat client. You need to accept the invitation to receive "
+        "messages"
+    )
+    cf.config["room"]["id"].append(f"{room_id} #configured for DM")
+    save_config_file(cf.config)
 
 
 @main.command()
