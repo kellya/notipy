@@ -9,6 +9,9 @@ TEA=~/bin/tea
 test:
 	pytest -v
 
+test:
+	pytest -v
+
 build: dir
 	poetry build
 
@@ -30,7 +33,6 @@ pyflakes:
 	pyflakes ${PROJECT_BASE}
 
 pylint:
-#	pylint --load-plugins=pylint_django --django-settings-module=fam_mac.settings ${PROJECT_BASE}
 	pylint ${PROJECT_BASE}
 
 gh-release: build
@@ -50,3 +52,4 @@ tea-release: build
 release: poetry-release
 
 .PHONY: dir clean release gh-release poetry-release coverage tea-release
+

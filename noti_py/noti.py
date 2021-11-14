@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+""" noti.py matrix notifier script """
 
 from pathlib import Path
 import select
@@ -42,7 +43,7 @@ def get_default_config_path(test=False):
     "--version", type=click.BOOL, is_flag=True, help="Display version information"
 )
 def main(config, version):
-    """main function"""
+    """Main noti.py logic"""
     if version:
         print(__version__)
         sys.exit()
@@ -55,7 +56,7 @@ def main(config, version):
 @click.option(
     "-p", "--password", prompt=True, confirmation_prompt=False, hide_input=True
 )
-def token(user, password):
+def get_token(user, password):
     """Get an auth token for the user"""
     base = cf.config["homeserver"]["base"] + cf.config["homeserver"]["api_base"]
     login = requests.post(
@@ -183,7 +184,19 @@ def send(messagetext, roomid, level, dm):
                 "msgtype": "m.text",
                 "body": messagetext,
                 "format": "org.matrix.custom.html",
-                "formatted_body": f"<table><tr><td><span data-mx-bg-color='{colors[level]}'>&nbsp;&nbsp;</td></span><td>{messagetext}</td></tr></table>",
+                "formatted_body": f"""
+                <table>
+                <tr>
+                  <td>
+                    <span data-mx-bg-color='{colors[level]}'>&nbsp;&nbsp;
+                </span>
+                  </td>
+                <td>{messagetext}</td></tr>
+                </table>
+                """,
+                #                <span data-mx-bg-color='{colors[level]}'>&nbsp;&nbsp;</td>
+                #                </span><td>{messagetext}</td></tr></table></span>
+                #                <td>{messagetext}</td></tr></table>""",
             },
             headers={
                 "Authorization": "Bearer " + cf.config["user"]["token"],
@@ -231,4 +244,4 @@ def rooms():
 
 
 if __name__ == "__main__":
-    main()
+    main()  # pylint: disable=no-value-for-parameter

@@ -1,7 +1,7 @@
+""" Create a config object to manage configuration details """
 import yaml
 
-
-class Config:
+class Config:  # pylint: disable=too-few-public-methods
     """Create an object to track config options "too few public methods" be damned :)"""
 
     def __init__(self):
