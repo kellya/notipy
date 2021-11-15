@@ -10,7 +10,7 @@ import click
 import yaml
 from noti_py.config.config import Config
 
-__version__ = "0.3.1"
+__version__ = "0.4.0"
 
 cf = Config()  # Config object we will use globally for options
 
@@ -159,16 +159,8 @@ def get_dm_room_id(dm_user=None):
 def send(messagetext, roomid, level, dm):
     "Send a message to your alert room defined in config.yaml"
     base = cf.config["homeserver"]["base"] + cf.config["homeserver"]["api_base"]
-    if select.select(
-        [
-            sys.stdin,
-        ],
-        [],
-        [],
-        0.0,
-    )[0]:
-        messagetext_stream = click.get_text_stream("stdin")
-        messagetext = messagetext_stream.read().strip()
+    if not sys.stdin.isatty():
+        messagetext = sys.stdin.read().strip()
     for room in roomid:
         roomurl = f"{base}/rooms/{urllib.parse.quote(room)}/send/m.room.message"
         colors = [

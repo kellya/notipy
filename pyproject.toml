@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "noti.py"
-version = "0.3.1"
+version = "0.4.0"
 description = "Python-based notification script to post a message to a materix server via the Matrix client/server API"
 authors = ["Alex Kelly <kellya@arachnitech.com>"]
 readme = "README.md"
