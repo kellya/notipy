@@ -160,7 +160,7 @@ def send(messagetext, roomid, level, dm):
     "Send a message to your alert room defined in config.yaml"
     base = cf.config["homeserver"]["base"] + cf.config["homeserver"]["api_base"]
     if not sys.stdin.isatty():
-        messagetext = sys.stdin.read().strip()
+        messagetext = f"<pre>{sys.stdin.read()}</pre>"
     for room in roomid:
         roomurl = f"{base}/rooms/{urllib.parse.quote(room)}/send/m.room.message"
         colors = [
