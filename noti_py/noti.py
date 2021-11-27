@@ -2,7 +2,6 @@
 """ noti.py matrix notifier script """
 
 from pathlib import Path
-import select
 import sys
 import urllib.parse
 import requests
@@ -136,13 +135,16 @@ def get_dm_room_id(dm_user=None):
         dm_room_id = cr.json()["room_id"]
         # for some reason, that invite in the json didn't work for me so force
         # an invite
-        invite = requests.post(
+        invite = requests.post(  # pylint: disable=unused-variable
             f"{base}/rooms/{cr.json()['room_id']}/invite",
             json={"user_id": dm_user},
             headers={
                 "Authorization": "Bearer " + cf.config["user"]["token"],
             },
         )
+        if invite.status_code != 200:
+            print("Failed to invite user to room")
+            sys.exit()
     return dm_room_id
 
 
